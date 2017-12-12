@@ -1,16 +1,16 @@
-FROM    exoplatform/base-jdk:jdk8
-LABEL   maintainer="telecomitalia"
+FROM exoplatform/base-jdk:jdk8
+LABEL maintainer="telecomitalia"
 
 MAINTAINER Simone e Vittorio, simone.mastrodonato@telecomitalia.it
 
 #Variabili d'ambiente
 ENV EXO_VERSION 5.0.0-M34
 
-ENV EXO_APP_DIR   /opt/exo
-ENV EXO_CONF_DIR  /etc/exo
-ENV EXO_DATA_DIR  /srv/exo
-ENV EXO_LOG_DIR   /var/log/exo
-ENV EXO_TMP_DIR   /tmp/exo-tmp
+ENV EXO_APP_DIR /opt/exo
+ENV EXO_CONF_DIR /etc/exo
+ENV EXO_DATA_DIR /srv/exo
+ENV EXO_LOG_DIR /var/log/exo
+ENV EXO_TMP_DIR /tmp/exo-tmp
 
 ENV EXO_USER exo
 
@@ -24,64 +24,62 @@ RUN rm -f /bin/sh && ln -s /bin/bash /bin/sh
 
 #Creo utente e assegno i permessi
 RUN useradd --create-home --user-group --shell /bin/bash ${EXO_USER}
-#aggiungere \   && echo "exo   ALL = NOPASSWD: ALL" > /etc/sudoers.d/e                                                                                                  xo && chmod 440 /etc/sudoers.d/exo
+
+#aggiungere \ && echo "exo ALL = NOPASSWD: ALL" > /etc/sudoers.d/e xo && chmod 440 /etc/sudoers.d/exo
 
 #Installo qualche utile tool
 RUN apt-get -qq update \
-  && apt-get -qq -y upgrade ${_APT_OPTIONS} \
-  && apt-get -qq -y install ${_APT_OPTIONS} xmlstarlet \
-  && apt-get -qq -y install ${_APT_OPTIONS} libreoffice-calc libreoffi                                                                                                  ce-draw libreoffice-impress libreoffice-math libreoffice-writer \
-  && apt-get -qq -y autoremove \
-  && apt-get -qq -y clean \
-  && rm -rf /var/lib/apt/lists/*
+&& apt-get -qq -y upgrade ${_APT_OPTIONS} \
+&& apt-get -qq -y install ${_APT_OPTIONS} xmlstarlet \
+&& apt-get -qq -y install ${_APT_OPTIONS} libreoffice-calc libreoffi ce-draw libreoffice-impress libreoffice-math libreoffice-writer \
+&& apt-get -qq -y autoremove \
+&& apt-get -qq -y clean \
+&& rm -rf /var/lib/apt/lists/*
 
 #Creo le cartelle necessarie
-RUN mkdir -p ${EXO_DATA_DIR}   && chown ${EXO_USER}:${EXO_GROUP} ${EXO                                                                                                  _DATA_DIR} \
-    && mkdir -p ${EXO_TMP_DIR} && chown ${EXO_USER}:${EXO_GROUP} ${EXO                                                                                                  _TMP_DIR} \
-    && mkdir -p ${EXO_LOG_DIR} && chown ${EXO_USER}:${EXO_GROUP} ${EXO                                                                                                  _LOG_DIR}
+RUN mkdir -p ${EXO_DATA_DIR} && chown ${EXO_USER}:${EXO_GROUP} ${EXO _DATA_DIR} \
+&& mkdir -p ${EXO_TMP_DIR} && chown ${EXO_USER}:${EXO_GROUP} ${EXO _TMP_DIR} \
+&& mkdir -p ${EXO_LOG_DIR} && chown ${EXO_USER}:${EXO_GROUP} ${EXO _LOG_DIR}
 
 #Installo il portale eXo Platform
-RUN curl -L -o /srv/downloads/eXo-Platform-community-${EXO_VERSION}.zi                                                                                                  p https://downloads.exoplatform.org/public/exo-platform-community-edit                                                                                                  ion-${EXO_VERSION}.zip \
-    && unzip -q /srv/downloads/eXo-Platform-community-${EXO_VERSION}.z                                                                                                  ip -d /srv/downloads/ \
-    && rm -f /srv/downloads/eXo-Platform-community-${EXO_VERSION}.zip                                                                                                   \
-    && mv /srv/downloads/platform-community-${EXO_VERSION} ${EXO_APP_D                                                                                                  IR} \
-    && chown -R ${EXO_USER}:${EXO_GROUP} ${EXO_APP_DIR} \
-    && ln -s ${EXO_APP_DIR}/gatein/conf /etc/exo \
-    && rm -rf ${EXO_APP_DIR}/logs && ln -s ${EXO_LOG_DIR} ${EXO_APP_DI                                                                                                  R}/logs
+RUN curl -L -o /srv/downloads/eXo-Platform-community-${EXO_VERSION}.zi p https://downloads.exoplatform.org/public/exo-platform-community-edit ion-${EXO_VERSION}.zip \
+&& unzip -q /srv/downloads/eXo-Platform-community-${EXO_VERSION}.z ip -d /srv/downloads/ \
+&& rm -f /srv/downloads/eXo-Platform-community-${EXO_VERSION}.zip \
+&& mv /srv/downloads/platform-community-${EXO_VERSION} ${EXO_APP_D IR} \
+&& chown -R ${EXO_USER}:${EXO_GROUP} ${EXO_APP_DIR} \
+&& ln -s ${EXO_APP_DIR}/gatein/conf /etc/exo \
+&& rm -rf ${EXO_APP_DIR}/logs && ln -s ${EXO_LOG_DIR} ${EXO_APP_DI R}/logs
 
 #Attribuzioni per corretta esecuzione in Openshift
-RUN chmod +x ${EXO_APP_DIR} ${EXO_CONF_DIR} ${EXO_DATA_DIR} ${EXO_LOG_                                                                                                  DIR} /tmp
-RUN chgrp -R 0 ${EXO_APP_DIR} ${EXO_CONF_DIR} ${EXO_DATA_DIR} ${EXO_LO                                                                                                  G_DIR} /tmp
-RUN chmod -R g+rwX ${EXO_APP_DIR} ${EXO_CONF_DIR} ${EXO_DATA_DIR} ${EX                                                                                                  O_LOG_DIR} /tmp
-
-
+RUN chmod +x ${EXO_APP_DIR} ${EXO_CONF_DIR} ${EXO_DATA_DIR} ${EXOLOG DIR} /tmp
+RUN chgrp -R 0 ${EXO_APP_DIR} ${EXO_CONF_DIR} ${EXO_DATA_DIR} ${EXO_LO G_DIR} /tmp
+RUN chmod -R g+rwX ${EXO_APP_DIR} ${EXO_CONF_DIR} ${EXO_DATA_DIR} ${EX O_LOG_DIR} /tmp
 
 #Installo i file di personalizzazione per girare su Openshift
-ADD https://raw.githubusercontent.com/exo-docker/exo-community/master/                                                                                                  scripts/setenv-docker-customize.sh ${EXO_APP_DIR}/bin/setenv-docker-cu                                                                                                  stomize.sh
+ADD https://raw.githubusercontent.com/exo-docker/exo-community/master/ scripts/setenv-docker-customize.sh ${EXO_APP_DIR}/bin/setenv-docker-cu stomize.sh
 RUN chmod 755 ${EXO_APP_DIR}/bin/setenv-docker-customize.sh \
-    && chown ${EXO_USER}:0 ${EXO_APP_DIR}/bin/setenv-docker-customize.                                                                                                  sh \
-    && sed -i '/# Load custom settings/i \
-\# Load custom settings for docker environment\n\
+&& chown ${EXO_USER}:0 ${EXO_APP_DIR}/bin/setenv-docker-customize. sh \
+&& sed -i '/# Load custom settings/i \
+# Load custom settings for docker environment\n\
 [ -r "$CATALINA_BASE/bin/setenv-docker-customize.sh" ] && { \n\
-  source $CATALINA_BASE/bin/setenv-docker-customize.sh \n\
-  if [ $? != 0 ]; then \n\
-    echo "Problem during docker customization process ... startup abor                                                                                                  ted !" \n\
-    exit 1 \n\
-  fi \n\
-} || echo "No Docker eXo Platform customization file : $CATALINA_BASE/                                                                                                  bin/setenv-docker-customize.sh"\n\
+source $CATALINA_BASE/bin/setenv-docker-customize.sh \n\
+if [ $? != 0 ]; then \n\
+echo "Problem during docker customization process ... startup abor ted !" \n\
+exit 1 \n\
+fi \n\
+} || echo "No Docker eXo Platform customization file : $CATALINA_BASE/ bin/setenv-docker-customize.sh"\n\
 ' ${EXO_APP_DIR}/bin/setenv.sh \
-  && grep 'setenv-docker-customize.sh' ${EXO_APP_DIR}/bin/setenv.sh
+&& grep 'setenv-docker-customize.sh' ${EXO_APP_DIR}/bin/setenv.sh
 
-ADD https://raw.githubusercontent.com/exo-docker/exo-community/master/                                                                                                  scripts/wait-for-it.sh /opt/wait-for-it.sh
+ADD https://raw.githubusercontent.com/exo-docker/exo-community/master/ scripts/wait-for-it.sh /opt/wait-for-it.sh
 RUN chmod 755 /opt/wait-for-it.sh \
-    && chown ${EXO_USER}:0 /opt/wait-for-it.sh
+&& chown ${EXO_USER}:0 /opt/wait-for-it.sh
 
 EXPOSE 8080
-
 
 WORKDIR "/opt/exo/"
 VOLUME ["/srv/exo"]
 
-RUN for a in ${ADDONS}; do echo "Installing addon $a"; /opt/exo/addon                                                                                                   install $a; done
+RUN for a in ${ADDONS}; do echo "Installing addon $a"; /opt/exo/addon install $a; done
 USER ${EXO_USER}
 ENTRYPOINT ["/opt/exo/start_eXo.sh", "--data", "/srv/exo"]
