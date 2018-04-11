@@ -8,6 +8,7 @@ if ! whoami &> /dev/null; then
     echo $guid
     echo "Setting runtime User ... "
     sed 's@exo:x:999:'$guid'@exo:x:'$(id -u)':0@g' /tmp/passwd > /etc/passwd
+    echo "User setted"
   fi
 fi
 
