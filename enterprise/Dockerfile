@@ -20,8 +20,10 @@ RUN cat /etc/passwd> /tmp/passwd && \
 
 ADD enterprise/bin/set_user ${EXO_APP_DIR}/bin/set_user
 
+RUN chmod a+x ${EXO_APP_DIR}/bin/set_user
+
 ENV PATH=$PATH:${EXO_APP_DIR}/bin
 
 USER 999
 
-ENTRYPOINT ["set_user"]
+ENTRYPOINT ["/opt/exo/bin/set_user"]
