@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+if ! whoami &> /dev/null; then
+  if [ -w /etc/passwd ]; then
+    echo "Setting runtime User ... "
+    sed 's@exo:x:${USER_ID}:@exo:x:'$(id -u)':@g' /tmp/passwd > /etc/passwd
+  fi
+fi
+
+exec "$@"
