@@ -15,12 +15,11 @@ RUN chmod 755 ${EXO_APP_DIR}/bin/setenv-docker-customize.sh && \
 || echo "No Docker eXo Platform customization file : $CATALINA_BASE/bin/setenv-docker-customize.sh"\n\
 ' ${EXO_APP_DIR}/bin/setenv.sh && \
   grep 'setenv-docker-customize.sh' ${EXO_APP_DIR}/bin/setenv.sh    
-RUN cat /etc/passwd> /tmp/exo-tmp/passwd && \
+RUN cat /etc/passwd> /tmp/passwd && \
    chmod -R g=u /etc/passwd 
 
-COPY enterprise/bin/ /tmp/exo-tmp
+COPY enterprise/bin/ ${EXO_APP_DIR}/bin
 
-RUN chmod g+rwX /tmp/exo-tmp/set_user
 USER 999
 
-ENTRYPOINT [ "/tmp/exo-tmp/set_user" ]
+ENTRYPOINT ${EXO_APP_DIR}/bin/set_user
