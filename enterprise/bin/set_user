@@ -4,7 +4,7 @@ set -e
 
 if ! whoami &> /dev/null; then
   if [ -w /etc/passwd ]; then
-    guid = $(cat /etc/group | awk -F':' '{ print $(NF-1) }')
+    guid=$(cat /etc/group | awk -F':' '{ print $(NF-1) }')
     echo "Setting runtime User ... "
     sed 's@exo:x:999:'$guid'@exo:x:'$(id -u)':0@g' /tmp/passwd > /etc/passwd
   fi
