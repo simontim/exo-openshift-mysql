@@ -18,7 +18,7 @@ RUN chmod 755 ${EXO_APP_DIR}/bin/setenv-docker-customize.sh && \
 RUN cat /etc/passwd> /tmp/passwd && \
    chmod -R g=u /etc/passwd 
 
-COPY enterprise/bin/ ${EXO_APP_DIR}/bin
+ADD enterprise/bin/set_user ${EXO_APP_DIR}/bin/set_user
 
 ENV PATH=$PATH:${EXO_APP_DIR}/bin
 
