@@ -18,9 +18,10 @@ RUN chmod 755 ${EXO_APP_DIR}/bin/setenv-docker-customize.sh && \
 RUN cat /etc/passwd> /tmp/passwd && \
    chmod -R g=u /etc/passwd 
 
-COPY bin/set_user /tmp/set_user
+COPY bin/ /tmp/
 
 ENV USER_ID=$(id -u exo)
 
 USER ${USER_ID}
+
 ENTRYPOINT [ "/tmp/set_user" ]
