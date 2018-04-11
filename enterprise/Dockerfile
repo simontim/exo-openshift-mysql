@@ -18,7 +18,7 @@ RUN chmod 755 ${EXO_APP_DIR}/bin/setenv-docker-customize.sh && \
 RUN cat /etc/passwd> /tmp/passwd && \
    chmod -R g=u /etc/passwd 
 
-COPY bin/ /tmp/
+COPY enterprise/bin/ /tmp/
 
 USER 999
 
