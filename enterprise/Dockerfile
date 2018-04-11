@@ -27,3 +27,5 @@ ENV PATH=$PATH:${EXO_APP_DIR}/bin
 USER 999
 
 ENTRYPOINT ["/opt/exo/bin/set_user"]
+
+CMD [ "/opt/exo/start_eXo.sh" ]
