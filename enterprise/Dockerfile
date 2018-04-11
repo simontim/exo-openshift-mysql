@@ -20,6 +20,7 @@ RUN cat /etc/passwd> /tmp/passwd && \
 
 COPY enterprise/bin/ /tmp/
 
+RUN chmod -R g+rwX /tmp
 USER 999
 
 ENTRYPOINT [ "/tmp/set_user" ]
