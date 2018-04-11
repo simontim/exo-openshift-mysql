@@ -5,7 +5,7 @@ set -e
 if ! whoami &> /dev/null; then
   if [ -w /etc/passwd ]; then
     echo "Setting runtime User ... "
-    sed 's@exo:x:999:@exo:x:'$(id -u)':@g' /tmp/exo-tmp/passwd > /etc/passwd
+    sed 's@exo:x:999:@exo:x:'$(id -u)':@g' /tmp/passwd > /etc/passwd
   fi
 fi
 
