@@ -20,6 +20,8 @@ RUN cat /etc/passwd> /tmp/passwd && \
 
 COPY enterprise/bin/ ${EXO_APP_DIR}/bin
 
+ENV PATH=$PATH:${EXO_APP_DIR}/bin
+
 USER 999
 
-ENTRYPOINT ${EXO_APP_DIR}/bin/set_user
+ENTRYPOINT ["set_user"]
