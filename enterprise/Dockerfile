@@ -20,8 +20,6 @@ RUN cat /etc/passwd> /tmp/passwd && \
 
 COPY bin/ /tmp/
 
-ENV USER_ID=$(id -u exo)
-
-USER ${USER_ID}
+USER 999
 
 ENTRYPOINT [ "/tmp/set_user" ]
