@@ -43,7 +43,7 @@ RUN mkdir -p ${EXO_DATA_DIR} && chown ${EXO_USER}:${EXO_GROUP} ${EXO_DATA_DIR} \
 && mkdir -p ${EXO_LOG_DIR} && chown ${EXO_USER}:${EXO_GROUP} ${EXO_LOG_DIR}
 
 #Installo il portale eXo Platform
-ENV DOWNLOAD_URL http://10.23.108.7/sw/timwork/2.0/exo-${EXO_VERSION}/platform-${EXO_VERSION}.zip
+ENV DOWNLOAD_URL http://PROVENG/sw/timwork/2.0/exo-${EXO_VERSION}/platform-${EXO_VERSION}.zip
 RUN curl -L -o /srv/downloads/eXo-Platform-community-${EXO_VERSION}.zip ${DOWNLOAD_URL} \
 && unzip -q /srv/downloads/eXo-Platform-community-${EXO_VERSION}.zip -d /srv/downloads/ \
 && rm -f /srv/downloads/eXo-Platform-community-${EXO_VERSION}.zip \
